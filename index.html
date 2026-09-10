@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitácora de Ingeniería — Cristhofer Gamero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plano:#0c1a26;
+    --plano-linea:rgba(120,190,220,.10);
+    --panel:#102435;
+    --panel-borde:#1f3d52;
+    --texto:#dceaf2;
+    --texto-tenue:#7d97a8;
+    --cian:#4fd7e0;
+    --ambar:#f2a93c;
+    --rojo-sello:#e15c4f;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, var(--plano-linea) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, var(--plano-linea) 0 1px, transparent 1px 40px),
+      var(--plano);
+    color:var(--texto);
+    font-family:'IBM Plex Mono', monospace;
+    line-height:1.6;
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    margin:0;
+    font-weight:700;
+  }
+  a{color:inherit;}
+  code{
+    background:rgba(79,215,224,.12);
+    padding:1px 6px;
+    border-radius:3px;
+    color:var(--cian);
+  }
+
+  main{
+    max-width:1040px;
+    margin:0 auto;
+    padding:52px 5vw 110px;
+  }
+
+  /* ========== ENCABEZADO ========== */
+  .encabezado{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:34px;
+    border-bottom:1px dashed var(--panel-borde);
+    padding-bottom:18px;
+    flex-wrap:wrap;
+  }
+  .encabezado .marca{
+    font-size:.78rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cian);
+  }
+  .encabezado .codigo{
+    font-size:.78rem;
+    color:var(--texto-tenue);
+  }
+
+  /* ========== FICHA DE ESTUDIANTE (estilo credencial) ========== */
+  .credencial{
+    position:relative;
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:28px;
+    background:var(--panel);
+    border:1px solid var(--panel-borde);
+    padding:30px;
+    margin-bottom:26px;
+  }
+  .credencial::before,
+  .credencial::after{
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    border:2px solid var(--cian);
+    opacity:.7;
+  }
+  .credencial::before{top:-2px; left:-2px; border-right:none; border-bottom:none;}
+  .credencial::after{bottom:-2px; right:-2px; border-left:none; border-top:none;}
+
+  .foto-marco{
+    position:relative;
+    width:150px;
+    height:150px;
+  }
+  .foto-marco img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border:1px solid var(--panel-borde);
+    filter:grayscale(.15) contrast(1.05);
+  }
+  .foto-marco .esquina{
+    position:absolute;
+    width:14px;
+    height:14px;
+    border:2px solid var(--ambar);
+  }
+  .foto-marco .esquina.tl{top:-6px; left:-6px; border-right:none; border-bottom:none;}
+  .foto-marco .esquina.tr{top:-6px; right:-6px; border-left:none; border-bottom:none;}
+  .foto-marco .esquina.bl{bottom:-6px; left:-6px; border-right:none; border-top:none;}
+  .foto-marco .esquina.br{bottom:-6px; right:-6px; border-left:none; border-top:none;}
+
+  .credencial-datos .rol{
+    display:inline-block;
+    font-size:.72rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ambar);
+    border:1px solid var(--ambar);
+    padding:3px 10px;
+    margin-bottom:14px;
+  }
+  .credencial-datos h1{
+    font-size:clamp(1.6rem, 3.4vw, 2.15rem);
+    line-height:1.1;
+    color:#fff;
+  }
+  .credencial-datos .subtitulo{
+    color:var(--texto-tenue);
+    font-size:.85rem;
+    margin-top:8px;
+  }
+  .credencial-linea{
+    display:flex;
+    gap:26px;
+    margin-top:20px;
+    flex-wrap:wrap;
+  }
+  .credencial-linea div{
+    font-size:.78rem;
+    color:var(--texto-tenue);
+  }
+  .credencial-linea strong{
+    display:block;
+    color:var(--cian);
+    font-size:1rem;
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  .barras{
+    margin-top:20px;
+    height:22px;
+    background:repeating-linear-gradient(90deg, var(--texto) 0 2px, transparent 2px 5px, var(--texto) 5px 6px, transparent 6px 11px);
+    opacity:.35;
+    max-width:280px;
+  }
+
+  /* ========== ENLACE AL REPOSITORIO GENERAL ========== */
+  .repo-general{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    background:var(--panel);
+    border:1px solid var(--panel-borde);
+    padding:14px 22px;
+    margin-bottom:44px;
+    font-size:.8rem;
+    flex-wrap:wrap;
+  }
+  .repo-general span{color:var(--texto-tenue);}
+  .repo-general a{
+    text-decoration:none;
+    border:1px solid var(--cian);
+    color:var(--cian);
+    padding:7px 16px;
+    white-space:nowrap;
+  }
+  .repo-general a:hover{background:var(--cian); color:#08222b;}
+
+  /* ========== NOTA ========== */
+  .nota{
+    font-size:.8rem;
+    color:var(--texto-tenue);
+    border-left:2px solid var(--panel-borde);
+    padding-left:14px;
+    margin-bottom:50px;
+  }
+
+  /* ========== UNIDADES ========== */
+  .unidad{margin-bottom:56px;}
+  .unidad-cabecera{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .unidad-sello{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:2.4rem;
+    font-weight:700;
+    color:transparent;
+    -webkit-text-stroke:1.5px var(--cian);
+    line-height:1;
+  }
+  .unidad-titulo{flex:1;}
+  .unidad-titulo h2{
+    font-size:1.15rem;
+    color:#fff;
+  }
+  .unidad-titulo span{
+    display:block;
+    font-size:.78rem;
+    color:var(--texto-tenue);
+    margin-top:4px;
+    letter-spacing:.03em;
+  }
+  .unidad-enlace{
+    font-size:.75rem;
+    text-decoration:none;
+    border:1px solid var(--panel-borde);
+    padding:7px 14px;
+    white-space:nowrap;
+    color:var(--texto);
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .unidad-enlace:hover{
+    border-color:var(--cian);
+    color:var(--cian);
+  }
+  .flecha{
+    color:var(--texto-tenue);
+    font-size:1.3rem;
+    transition:transform .2s ease;
+  }
+  .unidad.abierta .flecha{transform:rotate(90deg);}
+
+  .unidad-cuerpo{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+  }
+  .unidad.abierta .unidad-cuerpo{max-height:6000px;}
+
+  /* ---- linea de tiempo de semanas ---- */
+  .linea-tiempo{
+    position:relative;
+    margin-top:28px;
+    padding-left:26px;
+    border-left:2px solid var(--panel-borde);
+  }
+  .semana-bloque{
+    position:relative;
+    padding:0 0 34px 20px;
+  }
+  .semana-bloque::before{
+    content:"";
+    position:absolute;
+    left:-31px;
+    top:2px;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--plano);
+    border:2px solid var(--cian);
+  }
+  .semana-etiqueta{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:.95rem;
+    font-weight:600;
+    color:var(--cian);
+    margin-bottom:12px;
+  }
+
+  .docs-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:12px;
+  }
+  .doc-card{
+    background:var(--panel);
+    border:1px solid var(--panel-borde);
+    border-left:3px solid var(--ambar);
+    padding:14px 16px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .doc-card:hover{
+    border-left-color:var(--cian);
+    background:#132a3d;
+  }
+  .doc-card .doc-tag{
+    font-size:.7rem;
+    color:var(--ambar);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-bottom:6px;
+  }
+  .doc-card .doc-titulo{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:.9rem;
+    font-weight:600;
+    color:var(--texto);
+    margin-bottom:8px;
+  }
+  .doc-card .doc-archivo{
+    font-size:.72rem;
+    color:var(--texto-tenue);
+    border-top:1px dashed var(--panel-borde);
+    padding-top:7px;
+    word-break:break-word;
+  }
+  .doc-vacio{
+    font-size:.8rem;
+    color:var(--texto-tenue);
+    font-style:italic;
+  }
+
+  /* ========== MODAL ========== */
+  .modal-fondo{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(4,10,16,.78);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:50;
+  }
+  .modal-fondo.visible{display:flex;}
+  .modal{
+    background:var(--panel);
+    border:1px solid var(--cian);
+    padding:32px;
+    max-width:520px;
+    width:100%;
+    position:relative;
+  }
+  .modal h3{font-size:1.15rem; line-height:1.35; color:#fff;}
+  .modal .modal-tag{
+    display:block;
+    margin-top:14px;
+    font-size:.78rem;
+    color:var(--ambar);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .modal .modal-desc{
+    margin-top:10px;
+    font-size:.88rem;
+    color:var(--texto-tenue);
+  }
+  .modal .modal-archivo-caja{
+    margin-top:22px;
+    background:#0e2130;
+    border:1px solid var(--panel-borde);
+    padding:16px;
+  }
+  .modal .modal-nombre-archivo{
+    font-size:.8rem;
+    margin-bottom:14px;
+    word-break:break-word;
+    color:var(--cian);
+  }
+  .modal-botones{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 16px;
+    font-size:.78rem;
+    text-decoration:none;
+    cursor:pointer;
+    border:1px solid var(--panel-borde);
+    background:transparent;
+    color:var(--texto);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .btn-primario{
+    background:var(--cian);
+    border-color:var(--cian);
+    color:#08222b;
+    font-weight:600;
+  }
+  .modal-repo{
+    margin-top:12px;
+    font-size:.72rem;
+    color:var(--texto-tenue);
+  }
+  .modal-cerrar{
+    margin-top:22px;
+    background:transparent;
+    border:1px solid var(--panel-borde);
+    color:var(--texto-tenue);
+  }
+
+  footer{
+    max-width:1040px;
+    margin:0 auto;
+    padding:0 5vw 60px;
+    color:var(--texto-tenue);
+    font-size:.75rem;
+    border-top:1px dashed var(--panel-borde);
+    padding-top:20px;
+  }
+</style>
+</head>
+<body>
+
+<main>
+
+  <div class="encabezado">
+    <span class="marca">◈ Bitácora académica</span>
+    <span class="codigo">DOC-PORTAFOLIO-001</span>
+  </div>
+
+  <!-- ============ CREDENCIAL DEL ESTUDIANTE ============ -->
+  <section class="credencial">
+    <div class="foto-marco">
+      <img id="foto-estudiante" src="" alt="Foto del estudiante">
+      <span class="esquina tl"></span>
+      <span class="esquina tr"></span>
+      <span class="esquina bl"></span>
+      <span class="esquina br"></span>
+    </div>
+    <div class="credencial-datos">
+      <span class="rol" id="carrera-estudiante">Estudiante de Ingeniería</span>
+      <h1 id="nombre-estudiante">Nombre Apellido</h1>
+      <p class="subtitulo">Registro semanal de prácticas, proyectos y entregas del curso.</p>
+      <div class="credencial-linea">
+        <div><strong id="dato-unidades">4</strong>unidades</div>
+        <div><strong id="dato-semanas">16</strong>semanas</div>
+        <div><strong>GitHub</strong>repositorio único</div>
+      </div>
+      <div class="barras"></div>
+    </div>
+  </section>
+
+  <div class="repo-general">
+    <span>📦 Todo el portafolio vive en un único repositorio de GitHub.</span>
+    <a id="enlace-repo-general" href="#" target="_blank" rel="noopener">Ver repositorio completo</a>
+  </div>
+
+  <p class="nota">
+    Los archivos reales viven en las carpetas <code>unidad-N/semana-N</code> de este mismo repositorio. Para actualizar nombre, foto, la URL del repositorio y los documentos, edita el bloque <code>DATOS</code> al final del código de esta página.
+  </p>
+
+  <div id="contenedor-unidades"></div>
+</main>
+
+<footer>
+  Portafolio académico · Cristhofer Angel Gamero Carrion · actualizado semana a semana.
+</footer>
+
+<!-- ============ MODAL DE DOCUMENTO ============ -->
+<div class="modal-fondo" id="modal-fondo" onclick="cerrarModalFondo(event)">
+  <div class="modal">
+    <h3 id="modal-titulo"></h3>
+    <span class="modal-tag" id="modal-tag"></span>
+    <p class="modal-desc" id="modal-desc"></p>
+    <div class="modal-archivo-caja">
+      <div class="modal-nombre-archivo" id="modal-archivo"></div>
+      <div class="modal-botones">
+        <a class="btn btn-primario" id="modal-ver" target="_blank" rel="noopener">▸ Ver todas las páginas</a>
+        <a class="btn" id="modal-descargar" target="_blank" rel="noopener">⬇ Descargar</a>
+      </div>
+      <div class="modal-repo">◈ Archivo en el repositorio</div>
+    </div>
+    <button class="btn modal-cerrar" onclick="cerrarModal()">✕ Cerrar</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   DATOS — edita solo esta parte para personalizar tu portafolio
+   ========================================================================= */
+
+// 1) Tus datos personales
+const ESTUDIANTE = {
+  nombre: "Cristhofer Angel Gamero Carrion",
+  carrera: "Estudiante de Ingeniería",
+  // La foto "foto-perfil.png" debe estar en la raíz de este mismo repositorio.
+  foto: "foto-perfil.png"
+};
+
+// 2) LA ÚNICA URL de tu repositorio (sin barra al final, sin .git).
+//    Ejemplo: "https://github.com/tu-usuario/portafolio-cristhofer"
+const REPO_URL = "https://github.com/Cristhofer987/BASE-DE-DATOS-II";
+
+// 3) Tus 4 unidades. Ya NO necesitas poner una URL por unidad: todas
+//    viven dentro de REPO_URL, en su propia carpeta "unidad-N".
+const UNIDADES = [
+  {
+    numero: 1,
+    titulo: "Unidad 1 · Introducción a la arquitectura de base de datos",
+    semanas: [
+      {
+        numero: 1,
+        documentos: [
+          {
+            tag: "Manual",
+            titulo: "Cómo subir tu primera página",
+            descripcion: "Pasos necesarios para que una persona pueda subir su primera página.",
+            archivo: "unidad-1/semana-1/semana1_MANUAL_DE_COMO_SUBIR_TU_PRIMERA_PAGINA.pdf"
+          },
+          {
+            tag: "Manual",
+            titulo: "Cómo crear cuenta en GitHub",
+            descripcion: "Guía paso a paso para crear tu cuenta de GitHub desde cero.",
+            archivo: "unidad-1/semana-1/semana1_MANUAL_DE_COMO_CREAR_CUENTA_GITHUB.pdf"
+          },
+          {
+            tag: "Teoría",
+            titulo: "Arquitecturas de Bases de Datos",
+            descripcion: "Resumen de los principales modelos de arquitectura de bases de datos vistos en clase.",
+            archivo: "unidad-1/semana-1/semana1_Arquitecturas_de_Bases_de_Datos.pdf"
+          }
+        ]
+      },
+      {
+        numero: 2,
+        documentos: [
+          {
+            tag: "Práctica",
+            titulo: "Diagramas entidad-relación",
+            descripcion: "Diagramas entidad-relación trabajados durante la semana.",
+            archivo: "unidad-1/semana-2/semana2_diagramas_entidad_relacion.pdf"
+          },
+          {
+            tag: "Manual",
+            titulo: "Instalación de SQL Server",
+            descripcion: "Instrucciones para instalar y configurar SQL Server.",
+            archivo: "unidad-1/semana-2/semana2_MANUAL_DE_INSTALACION_DE_SQL_SERVER.pdf"
+          }
+        ]
+      },
+      {
+        numero: 3,
+        documentos: [
+          {
+            tag: "Estudio",
+            titulo: "Programa ER",
+            descripcion: "Programa utilizado para el estudio de modelos entidad-relación.",
+            archivo: "unidad-1/semana-3/semana3_ER.pdf"
+          }
+        ]
+      },
+      {
+        numero: 4,
+        documentos: [
+          {
+            tag: "Proyecto",
+            titulo: "Optimización y mejora de sistemas",
+            descripcion: "Trabajo final de la unidad sobre optimización y mejora de sistemas de bases de datos.",
+            archivo: "unidad-1/semana-4/semana4_Optimizacion_y_Mejora_en_Sistemas_de_Bases_de_Datos.pdf"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    numero: 2,
+    titulo: "Unidad 2",
+    semanas: [
+      { numero: 5, documentos: [] },
+      { numero: 6, documentos: [] },
+      { numero: 7, documentos: [] },
+      { numero: 8, documentos: [] }
+    ]
+  },
+  {
+    numero: 3,
+    titulo: "Unidad 3",
+    semanas: [
+      { numero: 9, documentos: [] },
+      { numero: 10, documentos: [] },
+      { numero: 11, documentos: [] },
+      { numero: 12, documentos: [] }
+    ]
+  },
+  {
+    numero: 4,
+    titulo: "Unidad 4",
+    semanas: [
+      { numero: 13, documentos: [] },
+      { numero: 14, documentos: [] },
+      { numero: 15, documentos: [] },
+      { numero: 16, documentos: [] }
+    ]
+  }
+];
+
+/* =========================================================================
+   A partir de aquí es el motor que dibuja la página. No hace falta tocarlo.
+   ========================================================================= */
+
+document.getElementById('nombre-estudiante').textContent = ESTUDIANTE.nombre;
+document.getElementById('carrera-estudiante').textContent = ESTUDIANTE.carrera;
+document.getElementById('foto-estudiante').src = ESTUDIANTE.foto;
+document.getElementById('dato-unidades').textContent = UNIDADES.length;
+document.getElementById('dato-semanas').textContent = UNIDADES.length * 4;
+document.getElementById('enlace-repo-general').href = REPO_URL;
+
+function urlVer(archivo){
+  return REPO_URL.replace(/\/$/, "") + "/blob/main/" + archivo;
+}
+function urlDescargar(archivo){
+  return REPO_URL.replace(/\/$/, "").replace("github.com", "raw.githubusercontent.com") + "/main/" + archivo;
+}
+
+const contenedor = document.getElementById('contenedor-unidades');
+
+UNIDADES.forEach((unidad, iu) => {
+  const idUnidad = "unidad-" + unidad.numero;
+  const primeraSemana = unidad.semanas[0].numero;
+  const ultimaSemana = unidad.semanas[unidad.semanas.length - 1].numero;
+
+  const seccion = document.createElement('section');
+  seccion.className = "unidad" + (iu === 0 ? " abierta" : "");
+  seccion.id = idUnidad;
+
+  let semanasHTML = "";
+  unidad.semanas.forEach(semana => {
+    let docsHTML = "";
+    if (semana.documentos.length === 0){
+      docsHTML = `<p class="doc-vacio">Todavía no hay archivos cargados para esta semana.</p>`;
+    } else {
+      semana.documentos.forEach((doc, idx) => {
+        docsHTML += `
+          <div class="doc-card" onclick="abrirModal('${idUnidad}', ${semana.numero}, ${idx})">
+            <div class="doc-tag">${doc.tag}</div>
+            <div class="doc-titulo">${doc.titulo}</div>
+            <div class="doc-archivo">${doc.archivo.split('/').pop()}</div>
+          </div>`;
+      });
+    }
+
+    semanasHTML += `
+      <div class="semana-bloque">
+        <div class="semana-etiqueta">Semana ${semana.numero}</div>
+        <div class="docs-grid">${docsHTML}</div>
+      </div>`;
+  });
+
+  seccion.innerHTML = `
+    <div class="unidad-cabecera" onclick="toggle('${idUnidad}')">
+      <div class="unidad-sello">U${unidad.numero}</div>
+      <div class="unidad-titulo">
+        <h2>${unidad.titulo}</h2>
+        <span>SEMANAS ${primeraSemana}–${ultimaSemana}</span>
+      </div>
+      <a class="unidad-enlace" href="${REPO_URL}/tree/main/unidad-${unidad.numero}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Ver carpeta</a>
+      <div class="flecha">›</div>
+    </div>
+    <div class="unidad-cuerpo">
+      <div class="linea-tiempo">${semanasHTML}</div>
+    </div>
+  `;
+
+  contenedor.appendChild(seccion);
+});
+
+function toggle(id){
+  document.getElementById(id).classList.toggle('abierta');
+}
+
+function abrirModal(idUnidad, numSemana, idxDoc){
+  const unidad = UNIDADES.find(u => ("unidad-" + u.numero) === idUnidad);
+  const semana = unidad.semanas.find(s => s.numero === numSemana);
+  const doc = semana.documentos[idxDoc];
+
+  document.getElementById('modal-titulo').textContent =
+    unidad.titulo + " · Semana " + numSemana;
+  document.getElementById('modal-tag').textContent = doc.tag + " — " + doc.titulo;
+  document.getElementById('modal-desc').textContent = doc.descripcion;
+  document.getElementById('modal-archivo').textContent = doc.archivo;
+  document.getElementById('modal-ver').href = urlVer(doc.archivo);
+  document.getElementById('modal-descargar').href = urlDescargar(doc.archivo);
+
+  document.getElementById('modal-fondo').classList.add('visible');
+}
+
+function cerrarModal(){
+  document.getElementById('modal-fondo').classList.remove('visible');
+}
+function cerrarModalFondo(e){
+  if (e.target.id === 'modal-fondo') cerrarModal();
+}
+</script>
+
+</body>
+</html>
